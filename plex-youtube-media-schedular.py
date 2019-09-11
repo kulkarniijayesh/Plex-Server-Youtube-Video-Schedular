@@ -2,9 +2,14 @@ print(" -------------------------------------------------")
 print("| Running Youtube-Media-Schedular for Plex-Server  |")
 print(" -------------------------------------------------")
 
+print("Update queue.json by adding youtube video URLs")
+print("Environment Variable - PLEX_MEDIA_PATH, needs to be set to point to the \
+Plex-Server media directory")
+
 from pytube import YouTube
 from tqdm import tqdm
 import json
+import os
 
 local_queue = {}
 
@@ -22,8 +27,9 @@ def downloadVideo(url):
         yt = details.streams.filter(subtype='mp4', res='360p').first()
 
 
-        yt.download(output_path='/home/jayesh/Videos', filename=details.title)
+        yt.download(output_path=os.environ['PLEX_MEDIA_PATH'], filename=details.title)
         pbar.close()
+        
         return 1
     except():
         print('Exception occurred...')
